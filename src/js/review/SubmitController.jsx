@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 
 import SubmitButtons from './SubmitButtons';
 import { PreSubmitSection } from '../components/PreSubmitSection';
-import { isValidForm } from '../validation';
+// import { isValidForm } from '../validation';
 import {
   createPageListByChapter,
   getActiveExpandedPages
@@ -52,37 +52,43 @@ class SubmitController extends React.Component {
     router.push(expandedPageList[expandedPageList.length - 2].path);
   }
 
+  // handleSubmit = () => {
+  //   const {
+  //     form,
+  //     formConfig,
+  //     pagesByChapter
+  //   } = this.props;
+
+  //   // If a pre-submit agreement is required, make sure it was accepted
+  //   const preSubmit = this.getPreSubmit(formConfig);
+  //   if (preSubmit.required && !form.data[preSubmit.field]) {
+  //     this.props.setSubmission('hasAttemptedSubmit', true);
+  //     // <PreSubmitSection/> is displaying an error for this case
+  //     return;
+  //   }
+
+  //   // Validation errors in this situation are not visible, so we’d
+  //   // like to know if they’re common
+  //   const { isValid, errors } = isValidForm(form, pagesByChapter);
+  //   if (!isValid) {
+  //     const recordEvent = formConfig.recordEvent ?
+  //       formConfig.recordEvent :
+  //       console.log.bind(console);   // eslint-disable-line no-console
+
+  //     recordEvent({ event: 'validation-failed-on-submit', errors });
+  //     this.props.setSubmission('status', 'validationError');
+  //     this.props.setSubmission('hasAttemptedSubmit', true);
+  //     return;
+  //   }
+
+  //   // User accepted if required, and no errors, so submit
+  //   this.props.submitForm(formConfig, form);
+  // }
+
   handleSubmit = () => {
-    const {
-      form,
-      formConfig,
-      pagesByChapter
-    } = this.props;
-
-    // If a pre-submit agreement is required, make sure it was accepted
-    const preSubmit = this.getPreSubmit(formConfig);
-    if (preSubmit.required && !form.data[preSubmit.field]) {
-      this.props.setSubmission('hasAttemptedSubmit', true);
-      // <PreSubmitSection/> is displaying an error for this case
-      return;
-    }
-
-    // Validation errors in this situation are not visible, so we’d
-    // like to know if they’re common
-    const { isValid, errors } = isValidForm(form, pagesByChapter);
-    if (!isValid) {
-      const recordEvent = formConfig.recordEvent ?
-        formConfig.recordEvent :
-        console.log.bind(console);   // eslint-disable-line no-console
-
-      recordEvent({ event: 'validation-failed-on-submit', errors });
-      this.props.setSubmission('status', 'validationError');
-      this.props.setSubmission('hasAttemptedSubmit', true);
-      return;
-    }
-
-    // User accepted if required, and no errors, so submit
-    this.props.submitForm(formConfig, form);
+    debugger; // eslint-disable-line no-debugger
+    const origin = location.origin;
+    location.replace(origin + '/confirmation'); // eslint-disable-line prefer-template
   }
 
   render() {
