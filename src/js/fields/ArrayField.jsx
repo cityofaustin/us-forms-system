@@ -292,7 +292,6 @@ export default class ArrayField extends React.Component {
             disabled={!this.props.formData}
             onClick={this.handleAdd}>
             Add another {uiOptions.itemName}
-            <i className="material-icons">add_box</i>
           </button>
         </div>
       </div>
