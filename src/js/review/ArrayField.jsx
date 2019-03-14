@@ -210,7 +210,6 @@ class ArrayField extends React.Component {
                 className="edit-btn primary-outline"
                 onClick={() => this.handleAdd()}>
                 Add another {uiOptions.itemName}
-                <i className="material-icons">add_box</i>
               </button>
             )}
           </div>
