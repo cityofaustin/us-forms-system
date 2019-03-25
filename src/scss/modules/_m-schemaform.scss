@@ -70,22 +70,26 @@ fieldset {
   font-weight: 700;
 }
 
+@mixin review-row-base {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  border-top: 1px solid $color-gray-light;
+  padding: 1.5rem;
+  padding-left: 0;
+  > dd {
+    font-weight: bold;
+    text-align: right;
+  }
+  > dt > p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
 dl.review {
   .review-row {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    border-top: 1px solid $color-gray-light;
-    padding: 1.5rem;
-    padding-left: 0;
-    > dd {
-      font-weight: bold;
-      text-align: right;
-    }
-    > dt > p {
-      margin-top: 0;
-      margin-bottom: 0;
-    }
+    @include review-row-base;
     @media (min-width: $small-screen) {
       flex-direction: row;
       > dd {
@@ -95,6 +99,17 @@ dl.review {
       > dt {
         max-width: 60%;
         min-width: 40%;
+      }
+    }
+  }
+  .review-column {
+    @include review-row-base;
+    @media (min-width: $small-screen) {
+      flex-direction: column;
+      > dt {
+        min-width: 100%;
+        text-align: center;
+        padding-bottom: 5px;
       }
     }
   }

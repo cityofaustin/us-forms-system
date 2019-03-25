@@ -5438,6 +5438,26 @@ dl.review {
         dl.review .review-row > dt {
           max-width: 60%;
           min-width: 40%; } }
+  dl.review .review-column {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    border-top: 1px solid #aeb0b5;
+    padding: 1.5rem;
+    padding-left: 0; }
+    dl.review .review-column > dd {
+      font-weight: bold;
+      text-align: right; }
+    dl.review .review-column > dt > p {
+      margin-top: 0;
+      margin-bottom: 0; }
+    @media (min-width: 481px) {
+      dl.review .review-column {
+        flex-direction: column; }
+        dl.review .review-column > dt {
+          min-width: 100%;
+          text-align: center;
+          padding-bottom: 5px; } }
 
 form.rjsf {
   max-width: 100%; }

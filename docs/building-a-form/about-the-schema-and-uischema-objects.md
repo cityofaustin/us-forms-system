@@ -241,6 +241,10 @@ The us-forms-system code includes additional `uiSchema` functionality not found 
     // review page. To keep the information in a single section on a review page, set
     // this property to `true`.
     keepInPageOnReview: true
+
+    // Indicates alignment of the reviewWidget.
+    // Defaults to "row"
+    reviewDirection: "column"
   }
 }
 ```

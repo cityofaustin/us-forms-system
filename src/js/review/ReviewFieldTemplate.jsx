@@ -13,9 +13,17 @@ export default function ReviewFieldTemplate(props) {
     ? uiSchema['ui:description']
     : null;
 
+  let parentClassName = 'review-row';
+  if (uiSchema['ui:options']
+    && uiSchema['ui:options'].reviewDirection
+    && uiSchema['ui:options'].reviewDirection === 'column'
+  ) {
+    parentClassName = 'review-column';
+  }
+
   return schema.type === 'object' || schema.type === 'array'
     ? children
-    : <div className="review-row">
+    : <div className={parentClassName}>
       <dt>
         {label}
         {textDescription && <p>{textDescription}</p>}
