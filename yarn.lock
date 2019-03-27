@@ -2220,7 +2220,7 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-date-fns@^1.29.0:
+date-fns@^1.30.1:
   version "1.30.1"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.30.1.tgz#2e71bf0b119153dbb4cc4e88d9ea5acfb50dc05c"
   integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
@@ -3297,25 +3297,25 @@ filename-regex@^2.0.0:
   resolved "https://registry.yarnpkg.com/filename-regex/-/filename-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
   integrity sha1-wcS5vuPglyXdsQa3XB4wH+LxiyY=
 
-filepond-plugin-file-validate-size@2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/filepond-plugin-file-validate-size/-/filepond-plugin-file-validate-size-2.1.1.tgz#b44f04a575d3eda38c184ba38cfa18b2420858e7"
-  integrity sha512-5SoykRvFaZ2h65JpjyKXGnvTUeNvMIjfNm2nrGsVIYRPVFguNeO7Kp/jBMhIVuhsF44gIR/ETLuazEXD87tLdg==
+filepond-plugin-file-validate-size@^2.1.1:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-file-validate-size/-/filepond-plugin-file-validate-size-2.1.3.tgz#fc5b64b979efc6f68e3a9869a66e399eea995906"
+  integrity sha512-5l2SVDuUQlOzO0aEKQAduVA3zJVIZAhKULmyTqSoUCJikQGJhUUqcHE32EjFhK8nkBXfUc8XSEb6Sr+fES65LA==
 
-filepond-plugin-image-exif-orientation@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/filepond-plugin-image-exif-orientation/-/filepond-plugin-image-exif-orientation-1.0.3.tgz#b2914b5fd8ec1bc5fc2eb1b0c969275fdbcf9198"
-  integrity sha512-eg0OTny+fsF21x3FnWRrZjDG50iMFFnl8uVKW9MpG+tggBqpp/G7LreO7/gHyPLaiMNO+TX+ANMF51lw6OlNrQ==
+filepond-plugin-image-exif-orientation@^1.0.3:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-image-exif-orientation/-/filepond-plugin-image-exif-orientation-1.0.6.tgz#75920935a5da298884718bfd454f03362ad783e8"
+  integrity sha512-CxoZSa3tjZaoQrRAvsYgDuYhyQPtylnOJ5usbbH5qo/m4x/CbZpkrbFjWXr3MvdiKz3SV8d+CadsLbSXKgWKjA==
 
-filepond-plugin-image-preview@3.1.4:
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/filepond-plugin-image-preview/-/filepond-plugin-image-preview-3.1.4.tgz#5b40b0059844350490459f633feabbc51f3a54d8"
-  integrity sha512-IGH8ZFY28ulpEVbukZMFbzfxS9fTw/YlmIJ33tHNKjzXFBMzJmioSVr6EGy6sz4X7HQF2vlAoiE+wiFIQarPXQ==
+filepond-plugin-image-preview@^3.1.4:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-image-preview/-/filepond-plugin-image-preview-3.1.6.tgz#0188300f952e76976741d8b88ddd03d1b4ce8214"
+  integrity sha512-IpIHUi0/IIc4Rbo2nxfA+AXzUu0JPfWU2HneuM0NjpNG4s0I0BVv5tw9CgFaqWQ7+Dr9ULJy4SdMmlP9vnyN1g==
 
-filepond@3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/filepond/-/filepond-3.6.0.tgz#a355db41ae6e0642ad89fa801f42ffe5d4b7b8b9"
-  integrity sha512-im4svkhGA7ckANNxmw4PqXEMtF+5adrRMF4EsR2OGuNZgRX3iDEREGI2/xuPYn8dRDm0iKR2CNt93WcqZ3aFyQ==
+filepond@^3.6.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/filepond/-/filepond-3.9.0.tgz#a11457ea432420585406b2511f67f2516246add8"
+  integrity sha512-6XqRwzdpCOHYvnp7hqPpYbOH03zweOcGkgv5ixQlihbRxLFUw2AJId4lHwLdbKW7LX9EaQPqZ6qRF+3T0dkDVw==
 
 fill-range@^2.1.0:
   version "2.2.4"
@@ -3369,6 +3369,11 @@ flat-cache@^1.2.1:
     graceful-fs "^4.1.2"
     rimraf "~2.6.2"
     write "^0.2.1"
+
+flatpickr@^4.3.2:
+  version "4.5.7"
+  resolved "https://registry.yarnpkg.com/flatpickr/-/flatpickr-4.5.7.tgz#6efc0d93c65547aa77294205c67830ebabe3565c"
+  integrity sha512-JqPfihUc9A/j9QAsh6otoARmMyUauPE17vRBEG+ThJwbl8zAq4ssGpxlPK3wWM/i8EFxkHg9UuVo0ds7XluKxw==
 
 for-in@^1.0.1, for-in@^1.0.2:
   version "1.0.2"
@@ -6075,10 +6080,18 @@ react-element-to-string@^1.0.2:
     indent-string "^2.1.0"
     json-stringify-pretty-compact "^1.0.1"
 
-react-filepond@5.0.0:
+react-filepond@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/react-filepond/-/react-filepond-5.0.0.tgz#28c30a878ce27b9b4899f877f4c3ead8dc9a026e"
   integrity sha512-RmX2t3WHUGDA/x7F1I4HTMBFnJMrHNAC0UEKc7B7Mh2BrhWgyMmEmndxz/0BgrtdQ5dUfgKu1b2dJfA2ClRB7w==
+
+react-flatpickr@^3.6.4:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/react-flatpickr/-/react-flatpickr-3.7.1.tgz#aaf0d79197f311a89c08c63b9d6a94735c451a73"
+  integrity sha512-VCIxJEyn2uPhwRsBtQL8FlXeaS6Rk/JNXGztqoayD2XFoJ1iMMWcXX318yHSdn0RKyYzsPTbWl/4DVd0toR03A==
+  dependencies:
+    flatpickr "^4.3.2"
+    prop-types "^15.5.10"
 
 react-is@^16.7.0:
   version "16.7.0"
