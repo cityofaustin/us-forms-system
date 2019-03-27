@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-export default function LocationReviewWidget(props) {
+export default function ReviewLocationWidget(props) {
   const valueJSON = props.value ? props.value : props.schema.formData;
   const location = JSON.parse(valueJSON);
 

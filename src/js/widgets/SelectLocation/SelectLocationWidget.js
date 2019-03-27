@@ -3,7 +3,7 @@ import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
 import * as MapboxGl from 'mapbox-gl';
 
 import Autosuggest from 'react-autosuggest';
-import './LocationPickerWidget.css';
+import './SelectLocationWidget.css';
 //importing the geocoder didnt seem to work at first
 const MapboxGeocoder = require('@mapbox/mapbox-gl-geocoder');
 
@@ -187,7 +187,7 @@ const getSuggestionValue = suggestion => {
 // Use your imagination to render suggestions.
 const renderSuggestion = suggestion => <div>{suggestion.name}</div>;
 
-export default class LocationPickerWidget extends React.Component {
+export default class SelectLocationWidget extends React.Component {
   constructor(props) {
     super(props);
 
