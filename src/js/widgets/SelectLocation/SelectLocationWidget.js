@@ -3,7 +3,7 @@ import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
 import * as MapboxGl from 'mapbox-gl';
 
 import Autosuggest from 'react-autosuggest';
-import './SelectLocationWidget.css';
+
 //importing the geocoder didnt seem to work at first
 const MapboxGeocoder = require('@mapbox/mapbox-gl-geocoder');
 
