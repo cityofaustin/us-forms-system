@@ -12,9 +12,6 @@ registerPlugin(
   FilePondPluginFileValidateSize
 );
 
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-import 'filepond/dist/filepond.min.css';
-
 import crypto from 'crypto';
 import uuid from 'uuid';
 

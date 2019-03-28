@@ -5,11 +5,8 @@ import { set, cloneDeep } from 'lodash';
 
 import {formatYear, formatDayMonth, parseISODate, formatISOPartialDate} from './dateHelpers';
 
-import 'flatpickr/dist/themes/material_green.css';
-
 // Returns datestring in the form "2011-11-11"
-// Uses parts of us-form-system's DateWidget. Includes a Calendar date picker.
-// ref: https://github.com/cityofaustin/us-forms-system/blob/master/src/js/widgets/DateWidget.jsx
+// Uses parts of us-form-system's DateWidget.jsx. Includes a Calendar date picker.
 export default class CalendarDateWidget extends React.Component {
   constructor(props) {
     super(props);
