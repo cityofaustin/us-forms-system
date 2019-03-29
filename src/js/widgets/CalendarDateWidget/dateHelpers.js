@@ -6,21 +6,13 @@ export function parseISODate(dateString) {
       month,
       day,
       year
-    }
+    };
   }
   return {
     month: '',
     day: '',
     year: '',
-  }
-}
-
-export function formatISOPartialDate({ month, day, year }) {
-  if (month && day && year) {
-    return `${formatYear(year)}-${formatDayMonth(month)}-${formatDayMonth(day)}`;
-  }
-
-  return undefined;
+  };
 }
 
 export function formatYear(val) {
@@ -28,9 +20,9 @@ export function formatYear(val) {
 }
 
 export function formatDayMonth(val) {
-  if (val === "") return "";
-  val = Number(val);
-  if (val) {
+  if (val === '') return '';
+  const numberVal = Number(val);
+  if (numberVal) {
     const dayOrMonth = val.toString();
     if (Number(dayOrMonth) && dayOrMonth.length === 1) {
       return `0${val}`;
@@ -39,4 +31,12 @@ export function formatDayMonth(val) {
     }
   }
   return '';
+}
+
+export function formatISOPartialDate({ month, day, year }) {
+  if (month && day && year) {
+    return `${formatYear(year)}-${formatDayMonth(month)}-${formatDayMonth(day)}`;
+  }
+
+  return undefined;
 }

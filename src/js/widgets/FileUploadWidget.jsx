@@ -20,16 +20,16 @@ const endpoint = process.env.API_URL;
 class FileUploadWidget extends Component {
   constructor(props) {
     super(props);
-      const uniqueid = crypto.createHmac('sha256', uuid.v4()).digest('hex');
-      this.state = {
-        uniqueIdentifier: uniqueid,
-        files: [],
-        fileList: [],
-      };
+    const uniqueid = crypto.createHmac('sha256', uuid.v4()).digest('hex');
+    this.state = {
+      uniqueIdentifier: uniqueid,
+      files: [],
+      fileList: [],
+    };
 
-      this.fileList = [];
+    this.fileList = [];
 
-      this.filesUpdated = this.filesUpdated.bind(this);
+    this.filesUpdated = this.filesUpdated.bind(this);
   }
 
   handleInit() {
@@ -43,7 +43,7 @@ class FileUploadWidget extends Component {
 
     // First, find the S3 signature data from this.state.fileList
 
-    let fileSignature = this.getFileSignatureFromList(file);
+    const fileSignature = this.getFileSignatureFromList(file);
     let fields = [];
 
     if (fileSignature == null) {
@@ -51,22 +51,22 @@ class FileUploadWidget extends Component {
     }
 
     try {
-      fields = Object.keys(fileSignature['fields']);
+      fields = Object.keys(fileSignature.fields);
     } catch (error) {
       fields = [];
-      console.log("Error: ");
+      console.log('Error: ');
       console.log(error);
     }
 
     for (const key of fields) {
-      formData.append(key, fileSignature['fields'][key]);
+      formData.append(key, fileSignature.fields[key]);
     }
 
-    formData.append('file', file, fileSignature['fields']['key']);
+    formData.append('file', file, fileSignature.fields.key);
 
     const request = new XMLHttpRequest();
 
-    request.open('POST', fileSignature['url']);
+    request.open('POST', fileSignature.url);
 
     // Should call the progress method to update the progress to 100% before calling load
     // Setting computable to false switches the loading indicator to infinite mode
@@ -77,7 +77,7 @@ class FileUploadWidget extends Component {
     // Should call the load method when done and pass the returned server file id
     // this server file id is then used later on when reverting or restoring a file
     // so your server knows which file to return without exposing that info to the client
-    request.onload = function() {
+    request.onload = function () {
       if (request.status >= 200 && request.status < 300) {
         // the load method accepts either a string (id) or an object
         load(request.responseText);
@@ -102,9 +102,9 @@ class FileUploadWidget extends Component {
   }
 
   withQuery(url, params) {
-    let query = Object.keys(params)
+    const query = Object.keys(params)
       .filter(k => params[k] !== undefined)
-      .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+      .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
       .join('&');
     url += (url.indexOf('?') === -1 ? '?' : '&') + query;
     return url;
@@ -119,9 +119,9 @@ class FileUploadWidget extends Component {
       value = this.fileList.length
         ? JSON.stringify(this.fileList.map(f => `${f.creds.fields.key}`))
         : false;
-    } catch(error) {
-      console.log("parseSignatureResponse() Error: ");
-      console.log(error);
+    } catch (error) {
+      console.error('parseSignatureResponse() Error: ');
+      console.error(error);
       value = false;
     }
 
@@ -132,21 +132,21 @@ class FileUploadWidget extends Component {
     });
   }
 
-  retrieveFileSignature (key, uniqueIdentifier) {
-    var formData = new FormData();
+  retrieveFileSignature(key, uniqueIdentifier) {
+    const formData = new FormData();
 
     formData.append('key', key);
     formData.append('uniqueid', uniqueIdentifier);
 
-    fetch(this.withQuery(endpoint + "/uploads/request-signature", {
+    fetch(this.withQuery(`${endpoint}/uploads/request-signature`, {
       file: key,
       uniqueid: uniqueIdentifier.toLowerCase()
     }))
-    .then(res => res.json())
-    .catch(error => console.error('Error:', error))
-    .then(res => {
-      this.parseSignatureResponse(res);
-    })
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+      .then(res => {
+        this.parseSignatureResponse(res);
+      });
   }
 
   handleFileAdded(error, file) {
@@ -154,10 +154,10 @@ class FileUploadWidget extends Component {
   }
 
   handleRemoveFile(file) {
-    for (let i in this.fileList) {
-      let currentFile = this.fileList[i];
-      if (currentFile['filename'] === file.filename) {
-        console.log('Removing: ' + file.filename + ' at index: ' + i);
+    for (const i in this.fileList) {
+      const currentFile = this.fileList[i];
+      if (currentFile.filename === file.filename) {
+        // console.log(`Removing: ${file.filename} at index: ${i}`);
         this.fileList.splice(i, 1);
         this.setState({
           fileList: [...this.fileList],
@@ -167,13 +167,13 @@ class FileUploadWidget extends Component {
   }
 
   getFileSignatureFromList(file) {
-    let uploadedFileName = file.name || '';
+    const uploadedFileName = file.name || '';
 
-    for (let i in this.fileList) {
-      let currentFile = this.fileList[i];
-      if (currentFile['filename'] === uploadedFileName) {
-        console.log('getFileSignatureFromList() Item found at index: ' + i);
-        let creds = this.fileList[i]['creds'];
+    for (const i in this.fileList) {
+      const currentFile = this.fileList[i];
+      if (currentFile.filename === uploadedFileName) {
+        // console.log(`getFileSignatureFromList() Item found at index: ${i}`);
+        const creds = this.fileList[i].creds;
         return creds;
       }
     }
@@ -195,8 +195,8 @@ class FileUploadWidget extends Component {
           {/* // Then we need to pass FilePond properties as attributes */}
           <FilePond
             ref={ref => (this.pond = ref)}
-            allowMultiple={true}
-            allowFileSizeValidation={true}
+            allowMultiple
+            allowFileSizeValidation
 
             maxFiles={100}
             maxFileSize="20000MB"
@@ -210,11 +210,10 @@ class FileUploadWidget extends Component {
             onaddfile={(error, file) => this.handleFileAdded(error, file)}
             /* OnRemoveFile we are going to find the file in the list and splice it (remove it) */
             onremovefile={file => this.handleRemoveFile(file)}
-            onupdatefiles={fileItems => this.filesUpdated({ fileItems })}
-          >
+            onupdatefiles={fileItems => this.filesUpdated({ fileItems })}>
             {/* Update current files  */}
             {this.state.files.map(file => (
-              <File key={file} src={file} origin="local" />
+              <File key={file} src={file} origin="local"/>
             ))}
           </FilePond>
         </header>
