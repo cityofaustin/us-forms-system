@@ -38,7 +38,6 @@ class SelectLocationMap extends Component {
     this.onStyleLoad = this.onStyleLoad.bind(this);
     this.onMoveEnd = this.onMoveEnd.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
-    this.onDragEnd = this.onDragEnd.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -132,6 +131,8 @@ class SelectLocationMap extends Component {
 
     return (
       <Map
+        // eslint-disable-next-line react/style-prop-object
+        style={'mapbox://styles/croweatx/cjow5d6cd3l7g2snrvf17wf0r'}
         center={[lng, lat]}
         onStyleLoad={this.onStyleLoad}
         onDragStart={this.onDragStart}

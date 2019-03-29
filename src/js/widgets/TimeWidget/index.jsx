@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { set, cloneDeep } from 'lodash';
 
-import TimeInput from './TimeInput.jsx';
+import TimeInput from './TimeInput';
 import { formatHourMinute, parseTime, formatTime } from './timeHelpers';
 
 // Returns datestring in the form "2011-11-11"
