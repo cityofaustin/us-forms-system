@@ -4,7 +4,7 @@ import * as MapboxGl from 'mapbox-gl';
 
 import Autosuggest from 'react-autosuggest';
 
-//importing the geocoder didnt seem to work at first
+// importing the geocoder didnt seem to work at first
 const MapboxGeocoder = require('@mapbox/mapbox-gl-geocoder');
 
 const Map = ReactMapboxGl({
@@ -27,8 +27,8 @@ const geocoderControl = new MapboxGeocoder({
   trackProximity: true,
 });
 
-const HERE_APP_ID = `R3EtGwWQmTKG5eVeyLV8`;
-const HERE_APP_CODE = `8aDkNeOzfxGFkOKm9fER0A`;
+const HERE_APP_ID = 'R3EtGwWQmTKG5eVeyLV8';
+const HERE_APP_CODE = '8aDkNeOzfxGFkOKm9fER0A';
 
 class SelectLocationMap extends Component {
   constructor(props) {
@@ -106,7 +106,7 @@ class SelectLocationMap extends Component {
 
     // using mapbox geocoder's event listener to show result
     // this ought to be linked up with or replace previous code
-    geocoderControl.on('result', function(event) {
+    geocoderControl.on('result', (event) => {
       map.getSource('geojson-point').setData(event.result.geometry);
     });
 
@@ -117,7 +117,7 @@ class SelectLocationMap extends Component {
       // proximity is designed for local scale, if the user is looking at the whole world,
       // it doesn't make sense to factor in the arbitrary centre of the map
       if (map.getZoom() > 9) {
-        var center = map.getCenter().wrap(); // ensures the longitude falls within -180 to 180 as the Geocoding API doesn't accept values outside this range
+        const center = map.getCenter().wrap(); // ensures the longitude falls within -180 to 180 as the Geocoding API doesn't accept values outside this range
         geocoderControl.setProximity({
           longitude: center.lng,
           latitude: center.lat,
@@ -140,16 +140,14 @@ class SelectLocationMap extends Component {
         center={[lng, lat]}
         onStyleLoad={this.onStyleLoad}
         onDragStart={this.onDragStart}
-        onMoveEnd={this.onMoveEnd}
-      >
+        onMoveEnd={this.onMoveEnd}>
         <Layer
           type="symbol"
           id="selectedLocation"
           layout={{
             'icon-image': 'marker-open-small',
             'icon-allow-overlap': true,
-          }}
-        >
+          }}>
           {/*
           <Feature
             coordinates={[lng, lat]}
@@ -158,8 +156,8 @@ class SelectLocationMap extends Component {
           /> */}
         </Layer>
 
-        <div className={`pin ${pinDrop}`} />
-        <div className="pulse" />
+        <div className={`pin ${pinDrop}`}/>
+        <div className="pulse"/>
       </Map>
     );
   }
@@ -173,8 +171,8 @@ const getSuggestions = value => {
   return inputLength === 0
     ? []
     : languages.filter(
-        lang => lang.name.toLowerCase().slice(0, inputLength) === inputValue,
-      );
+      lang => lang.name.toLowerCase().slice(0, inputLength) === inputValue,
+    );
 };
 
 // When suggestion is clicked, Autosuggest needs to populate the input
@@ -208,23 +206,23 @@ export default class SelectLocationWidget extends React.Component {
   }
 
   locationUpdated({ lngLat }) {
-    var address = 'Dropped Pin';
+    let address = 'Dropped Pin';
 
     // Use here reverse geocoding to get a human readable address for the pin
     fetch(`
       https://reverse.geocoder.api.here.com/6.2/reversegeocode.json?prox=${
-        lngLat.lat
-      }%2C${
-      lngLat.lng
-    }%2C250&mode=retrieveAddresses&maxresults=1&gen=9&app_id=${HERE_APP_ID}&app_code=${HERE_APP_CODE}`).then(
+  lngLat.lat
+}%2C${
+  lngLat.lng
+}%2C250&mode=retrieveAddresses&maxresults=1&gen=9&app_id=${HERE_APP_ID}&app_code=${HERE_APP_CODE}`).then(
       response => {
         if (response.status !== 200) {
           console.log(
-            'Looks like there was a problem. Status Code: ' + response.status,
+            `Looks like there was a problem. Status Code: ${response.status}`,
           );
 
           const location = {
-            address: address,
+            address,
             position: lngLat,
           };
 
@@ -239,7 +237,7 @@ export default class SelectLocationWidget extends React.Component {
           address = data.Response.View[0].Result[0].Location.Address.Label;
 
           const location = {
-            address: address,
+            address,
             position: lngLat,
           };
 
@@ -278,8 +276,8 @@ export default class SelectLocationWidget extends React.Component {
       const lat = suggestion.location[0];
 
       const location = {
-        address: address,
-        position: { lng: lng, lat: lat },
+        address,
+        position: { lng, lat },
       };
 
       const valueJSON = JSON.stringify(location);
@@ -311,7 +309,7 @@ export default class SelectLocationWidget extends React.Component {
         .then(response => {
           if (response.status !== 200) {
             console.log(
-              'Looks like there was a problem. Status Code: ' + response.status,
+              `Looks like there was a problem. Status Code: ${response.status}`,
             );
             this.setState({ suggestions: [] });
             return;
@@ -326,7 +324,7 @@ export default class SelectLocationWidget extends React.Component {
               location: result.position,
               humanAddress: result.vicinity.replace(/<br\/>/g, ', '),
             }));
-            this.setState({ suggestions: suggestions });
+            this.setState({ suggestions });
           });
         })
         .catch(err => {
@@ -357,7 +355,7 @@ export default class SelectLocationWidget extends React.Component {
         this.locationUpdated({ lngLat });
       },
       error => {
-        debugger;
+
       },
       { enableHighAccuracy: true },
     );
@@ -380,8 +378,7 @@ export default class SelectLocationWidget extends React.Component {
           <SelectLocationMap
             lat={location.position.lat}
             lng={location.position.lng}
-            locationUpdated={this.locationUpdated}
-          />
+            locationUpdated={this.locationUpdated}/>
         </div>
       </div>
     );
