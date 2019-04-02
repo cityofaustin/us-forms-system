@@ -5,6 +5,9 @@ import EmailWidget from './EmailWidget';
 import RadioWidget from './RadioWidget';
 import CheckboxWidget from './CheckboxWidget';
 import YesNoWidget from './YesNoWidget';
+import FileUploadWidget from './FileUploadWidget';
+import CalendarDateWidget from './CalendarDateWidget';
+import TimeWidget from './TimeWidget';
 
 const widgets = {
   TextWidget,
@@ -13,7 +16,10 @@ const widgets = {
   EmailWidget,
   RadioWidget,
   CheckboxWidget,
-  yesNo: YesNoWidget
+  yesNo: YesNoWidget,
+  FileUploadWidget,
+  CalendarDateWidget,
+  TimeWidget,
 };
 
 export default widgets;

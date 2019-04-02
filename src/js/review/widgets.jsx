@@ -42,3 +42,7 @@ export const yesNo = ({ value, options = {} }) => {
 export const CheckboxWidget = ({ value }) => {
   return <span>{value === true ? 'True' : ''}</span>;
 };
+
+export { default as FileUploadReviewWidget } from './FileUploadReviewWidget';
+export { default as CalendarDateReviewWidget } from './CalendarDateReviewWidget';
+export { default as TimeReviewWidget } from './TimeReviewWidget';
