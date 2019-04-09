@@ -21,7 +21,7 @@ export function formatHourMinute(val) {
   if (val === '') return '';
   const numberVal = Number(val);
   if (numberVal || (numberVal === 0)) {
-    const hourOrMinute = val.toString();
+    const hourOrMinute = numberVal.toString();
     if (!isNaN(hourOrMinute) && hourOrMinute.length === 1) {
       return `0${numberVal}`;
     } else if (!isNaN(hourOrMinute)) {
