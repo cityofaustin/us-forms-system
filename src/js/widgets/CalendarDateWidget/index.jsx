@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Flatpickr from 'react-flatpickr';
+import { isAfter } from 'date-fns';
 import { set, cloneDeep } from 'lodash';
 
-import { formatYear, formatDayMonth, parseISODate, formatISOPartialDate } from './dateHelpers';
+import {formatYear, formatDayMonth, parseISODate, formatISOPartialDate, setValidDate} from './dateHelpers';
 
-// Returns datestring in the form "2011-11-11"
-// Uses parts of us-form-system's DateWidget.jsx. Includes a Calendar date picker.
+// Returns datestring in the form '2011-11-22'
+// Uses parts of us-form-system's DateWidget. Includes a Calendar date picker.
+// ref: https://github.com/cityofaustin/us-forms-system/blob/master/src/js/widgets/DateWidget.jsx
 export default class CalendarDateWidget extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +31,7 @@ export default class CalendarDateWidget extends React.Component {
   }
 
   isIncomplete({ month, day, year }) {
-    return (!month || !day || !year);
+    return (!month || !day || !year)
   }
 
   handleFormChange(field, value) {
@@ -37,7 +39,7 @@ export default class CalendarDateWidget extends React.Component {
 
     if (field === 'month') {
       if ((value > 12)) {
-        return;
+        return
       }
       if (value < 1) {
         value = '';
@@ -45,7 +47,7 @@ export default class CalendarDateWidget extends React.Component {
     }
     if (field === 'day') {
       if (value > 31) {
-        return;
+        return
       }
       if (value < 1) {
         value = '';
@@ -60,7 +62,7 @@ export default class CalendarDateWidget extends React.Component {
       }
     }
 
-    const newState = cloneDeep(this.state);
+    let newState = cloneDeep(this.state);
     const formatter = (field === 'year') ? formatYear : formatDayMonth;
 
     set(newState, ['value', field], formatter(value));
@@ -71,9 +73,23 @@ export default class CalendarDateWidget extends React.Component {
       (
         ((field === 'day') && (!!this.state.value.month)) ||
         ((field === 'month') && (!!this.state.value.day))
-      ) && (this.state.value.year === '')
+      ) && (!this.state.value.year)
     ) {
-      set(newState, ['value', 'year'], currentYear);
+      const isDateFromLastYear = isAfter(
+        new Date(currentYear, newState.value.month - 1, newState.value.day),
+        new Date(new Date())
+      );
+      const autofillYear = isDateFromLastYear ? currentYear - 1 : currentYear;
+      set(newState, ['value', 'year'], autofillYear);
+    }
+
+    // If all 3 values are filled out, make sure they are a valid day
+    if (
+      !!newState.value.year &&
+      !!newState.value.day &&
+      !!newState.value.month
+    ) {
+      newState = setValidDate(newState);
     }
 
     this.setState(newState, () => {
@@ -86,9 +102,9 @@ export default class CalendarDateWidget extends React.Component {
   }
 
   handleFlatpickrChange(dateString) {
-    const newState = cloneDeep(this.state);
+    let newState = cloneDeep(this.state);
     set(newState, 'value', parseISODate(dateString));
-    set(newState, 'touched', { month: true, day: true, year: true });
+    set(newState, 'touched', {month: true, day: true, year: true});
 
     this.setState(newState, () => {
       if (this.isIncomplete(newState.value)) {
@@ -96,16 +112,16 @@ export default class CalendarDateWidget extends React.Component {
       } else {
         this.props.onChange(formatISOPartialDate(newState.value));
       }
-    });
+    })
   }
 
   render() {
-    const { id } = this.props;
-    const { month, day, year } = this.state.value;
+    const {id} = this.props;
+    const {month, day, year} = this.state.value;
     const flatpickrDate = (month && day && year) ?
-      formatISOPartialDate({ month, day, year }) : undefined;
+      formatISOPartialDate({month,day,year}) : undefined;
 
-    // <span> state date: {formatISOPartialDate({month,day,year})} </span><br/>
+    //<span> state date: {formatISOPartialDate({month,day,year})} </span><br/>
     return (
       <div className="date-widget-container">
 
@@ -117,21 +133,24 @@ export default class CalendarDateWidget extends React.Component {
                 <input
                   className="usa-input-inline" id={`${id}_Month`} name={`${id}_Month`}
                   type="number" min="1" max="12" value={month}
-                  onChange={(event) => this.handleFormChange('month', event.target.value)}/>
+                  onChange={(event) => this.handleFormChange('month', event.target.value)}
+                />
               </div>
               <div className="usa-datefield usa-form-group usa-form-group-day">
                 <label className="input-date-label smaller-input" htmlFor={`${id}_Day`}>Day</label>
                 <input
                   className="usa-input-inline" id={`${id}_Day`} name={`${id}_Day`}
                   type="number" min="1" max="31" value={day}
-                  onChange={(event) => this.handleFormChange('day', event.target.value)}/>
+                  onChange={(event) => this.handleFormChange('day', event.target.value)}
+                />
               </div>
               <div className="usa-datefield usa-form-group usa-form-group-year usa-form-group-year-fix">
                 <label className="input-date-label smaller-input" htmlFor={`${id}_Year`}>Year</label>
                 <input
                   className="usa-input-inline" id={`${id}_Year`} name={`${id}_Year`}
                   type="number" min="1900" value={year}
-                  onChange={(event) => this.handleFormChange('year', event.target.value)}/>
+                  onChange={(event) => this.handleFormChange('year', event.target.value)}
+                />
               </div>
               <div aria-hidden className="usa-datefield usa-form-group flatpickr-container">
                 <Flatpickr
@@ -143,7 +162,8 @@ export default class CalendarDateWidget extends React.Component {
                     enableTime: false,
                   }}
                   value={flatpickrDate}
-                  onChange={(dates, datestring) => this.handleFlatpickrChange(datestring)}>
+                  onChange={(dates, datestring) => this.handleFlatpickrChange(datestring)}
+                >
                   <label className="hidden-content" htmlFor={`${id}_calendar`}>Calendar</label>
                   <input className="hidden-flatpickr-input-box" tabIndex="-1" type="text" data-input name={`${id}_calendar`} id={`${id}_calendar`}/>
                   <span className="usa-input-inline flatpickr-input-button-container" title="toggle" data-toggle>
