@@ -1,20 +1,21 @@
 import React from 'react';
 
-
 export default function ReviewLocationWidget(props) {
   const valueJSON = props.value ? props.value : props.schema.formData;
   const location = JSON.parse(valueJSON);
+  // mapbox static map styles
+  const MAPBOX_TOKEN = 'pk.eyJ1IjoiY3Jvd2VhdHgiLCJhIjoiY2o1NDFvYmxkMHhkcDMycDF2a3pseDFpZiJ9.UcnizcFDleMpv5Vbv8Rngw';
+  const markerColor = '0050d7';
+  const markerOverlay = `pin-l+${markerColor}(${location.position.lng},${location.position.lat})`;
+  const zoom = 15;
+  const width = 680;
+  const height = 400;
+  // eslint-disable-next-line max-len
+  const staticMap = `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${markerOverlay}/${location.position.lng},${location.position.lat},${zoom}/${width}x${height}?access_token=${MAPBOX_TOKEN}`;
 
   return (
     <div>
-      <img
-        src={`//maps.googleapis.com/maps/api/staticmap?markers=${
-          location.position.lat
-        },${
-          location.position.lng
-        // eslint-disable-next-line max-len
-        }&zoom=15&size=680x400&scale=1&maptype=roadmap&key=AIzaSyBqtg0ntvqWGSHOznB4kq3DiYSyyVNKzIs&style=feature:landscape%7Celement:geometry.fill%7Ccolor:0xf0eef0&style=feature:landscape.man_made%7Celement:geometry.fill%7Ccolor:0xf0eef0&style=feature:poi%7Celement:labels.text%7Cvisibility:off&style=feature:poi.business%7Cvisibility:off&style=feature:road%7Celement:labels.icon%7Cvisibility:off&style=feature:road.arterial%7Celement:geometry.fill%7Ccolor:0x7f7189&style=feature:road.arterial%7Celement:geometry.stroke%7Ccolor:0x7f7189&style=feature:road.arterial%7Celement:labels.icon%7Ccolor:0x3e3b6c&style=feature:road.arterial%7Celement:labels.text.fill%7Ccolor:0x5e494a&style=feature:road.arterial%7Celement:labels.text.stroke%7Ccolor:0xffffff&style=feature:road.highway%7Celement:geometry.fill%7Ccolor:0xe89f9a&style=feature:road.highway%7Celement:geometry.stroke%7Ccolor:0xd6613c&style=feature:road.highway%7Celement:labels.text.fill%7Ccolor:0x190f2c&style=feature:road.highway%7Celement:labels.text.stroke%7Ccolor:0xf6f2fd&style=feature:road.local%7Celement:geometry.fill%7Ccolor:0xb8b1bd&style=feature:road.local%7Celement:geometry.stroke%7Ccolor:0xb8b1bd&style=feature:road.local%7Celement:labels.text%7Ccolor:0xffffff&style=feature:road.local%7Celement:labels.text.fill%7Ccolor:0x5e494a&style=feature:road.local%7Celement:labels.text.stroke%7Ccolor:0xffffff&style=feature:transit%7Cvisibility:off`}
-        alt={location.address}/>
+      <img src={staticMap} alt={location.address}/>
       <div>{location.address}</div>
     </div>
   );
