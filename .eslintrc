@@ -18,12 +18,9 @@
     "camelcase": [2, { "properties": "always" }],
     "comma-dangle": 0, // Dangling commas are wonderful. It's JSON that's stupid.
     "func-names": 2,
-    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-console": ["error", { "allow": ["warn", "error", "info"] }],
     "no-negated-condition": 0, // Sometimes negated conditions are easier to understand.
-    "no-unused-vars": [
-      2,
-      { "args": "after-used", "argsIgnorePattern": "^_", "vars": "local" }
-    ],
+    "no-unused-vars": [2, { "args": "after-used", "argsIgnorePattern": "^_", "vars": "local" }],
     "prefer-rest-params": 2,
     "quote-props": [2, "as-needed", { "keywords": true }],
     "space-unary-ops": 2,
@@ -44,14 +41,8 @@
     "react/jsx-equals-spacing": 2,
     "react/jsx-key": 2,
     "react/jsx-pascal-case": 2,
-    "react/sort-prop-types": [
-      0,
-      { "callbacksLast": true, "requiredFirst": true }
-    ], // TODO(awong): Too hard to turn on.
-    "react/jsx-sort-props": [
-      0,
-      { "callbacksLast": true, "shorthandFirst": true }
-    ], // TODO(awong): Too hard to turn on.
+    "react/sort-prop-types": [0, { "callbacksLast": true, "requiredFirst": true }], // TODO(awong): Too hard to turn on.
+    "react/jsx-sort-props": [0, { "callbacksLast": true, "shorthandFirst": true }], // TODO(awong): Too hard to turn on.
     "react/jsx-no-duplicate-props": 2,
     "react/no-danger": 2,
     "react/no-deprecated": 2,

@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import ReactMapboxGl, { Layer } from 'react-mapbox-gl';
-import * as MapboxGl from 'mapbox-gl';
+import { NavigationControl } from 'mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
-// importing the geocoder didnt seem to work at first
-const MapboxGeocoder = require('@mapbox/mapbox-gl-geocoder');
+const HERE_APP_ID = 'R3EtGwWQmTKG5eVeyLV8';
+const HERE_APP_CODE = '8aDkNeOzfxGFkOKm9fER0A';
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiY3Jvd2VhdHgiLCJhIjoiY2o1NDFvYmxkMHhkcDMycDF2a3pseDFpZiJ9.UcnizcFDleMpv5Vbv8Rngw';
+const GEOCODE_DEBUG = false;
 
 const Map = ReactMapboxGl({
-  accessToken:
-    'pk.eyJ1IjoiY3Jvd2VhdHgiLCJhIjoiY2o1NDFvYmxkMHhkcDMycDF2a3pseDFpZiJ9.UcnizcFDleMpv5Vbv8Rngw',
+  accessToken: MAPBOX_TOKEN
 });
 
 const geocoderControl = new MapboxGeocoder({
-  accessToken:
-    'pk.eyJ1IjoiY3Jvd2VhdHgiLCJhIjoiY2o1NDFvYmxkMHhkcDMycDF2a3pseDFpZiJ9.UcnizcFDleMpv5Vbv8Rngw',
+  accessToken: MAPBOX_TOKEN,
   placeholder: 'Enter a location here',
 
   // bounding box restricts results to Travis County
@@ -22,81 +23,69 @@ const geocoderControl = new MapboxGeocoder({
   // or by country:
   // countries: 'us',
   limit: 5,
-  trackProximity: true,
+  trackProximity: true
 });
 
-const HERE_APP_ID = 'R3EtGwWQmTKG5eVeyLV8';
-const HERE_APP_CODE = '8aDkNeOzfxGFkOKm9fER0A';
-
-class SelectLocationMap extends Component {
+export default class SelectLocationWidget extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      center: [-97.7460479736328, 30.266184073558826],
-      showPin: true,
-    };
+
+    this.locationUpdated = this.locationUpdated.bind(this);
+    this.onChange = this.onChange.bind(this);
     this.onStyleLoad = this.onStyleLoad.bind(this);
     this.onMoveEnd = this.onMoveEnd.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
+    this.onDragEnd = this.onDragEnd.bind(this);
+    this.onForwardGeocodeResult = this.onForwardGeocodeResult.bind(this);
+
+    // take location data from the form if it exists, or use a default
+    const location = props.value
+      ? JSON.parse(props.value)
+      : {
+        address: 'default',
+        position: {
+          lng: null,
+          lat: null
+        }
+      };
+
+    this.state = {
+      center: [location.position.lng || -97.7460479736328, location.position.lat || 30.266184073558826],
+      showPin: true,
+      geocodeAddressString: location.address,
+      formValue: props.value || ''
+    };
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.lat !== prevProps.lat || this.props.lng !== prevProps.lng) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({
-        showPin: true,
-      });
-    }
+  onForwardGeocodeResult(geocodeResult) {
+    const address = geocodeResult.result.place_name;
+    this.setState({ geocodeAddressString: address });
   }
 
   onDragStart() {
-    // debugger;
     this.setState({
-      showPin: false,
+      showPin: false
     });
   }
 
-  onMoveEnd(map) {
-    const center = map.getCenter();
-    this.props.locationUpdated({ lngLat: center });
+  onDragEnd() {
+    this.setState({
+      geocodeAddressString: null,
+      showPin: true
+    });
   }
 
   onStyleLoad(map) {
-    const zoomControl = new MapboxGl.NavigationControl();
-
-    map.addControl(zoomControl, 'bottom-right');
-
     // disable map rotation using right click + drag
     map.dragRotate.disable();
-
     // disable map rotation using touch rotation gesture
     map.touchZoomRotate.disableRotation();
 
-    map.addSource('geojson-point', {
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: [],
-      },
-    });
-
-    map.addLayer({
-      id: 'geocoded-point',
-      source: 'geojson-point',
-      type: 'circle',
-      paint: {
-        'circle-radius': 10,
-        'circle-color': '#007cbf',
-      },
-    });
-
+    const zoomControl = new NavigationControl();
+    map.addControl(zoomControl, 'bottom-right');
     map.addControl(geocoderControl, 'top-left');
 
-    // using mapbox geocoder's event listener to show result
-    // this ought to be linked up with or replace previous code
-    geocoderControl.on('result', (event) => {
-      map.getSource('geojson-point').setData(event.result.geometry);
-    });
+    geocoderControl.on('result', this.onForwardGeocodeResult);
 
     function updateGeocoderProximity() {
       // proximity is designed for local scale, if the user is looking at the whole world,
@@ -105,7 +94,7 @@ class SelectLocationMap extends Component {
         const center = map.getCenter().wrap(); // ensures the longitude falls within -180 to 180 as the Geocoding API doesn't accept values outside this range
         geocoderControl.setProximity({
           longitude: center.lng,
-          latitude: center.lat,
+          latitude: center.lat
         });
       } else {
         geocoderControl.setProximity(null);
@@ -114,149 +103,119 @@ class SelectLocationMap extends Component {
 
     map.on('load', updateGeocoderProximity); // set proximity on map load
     map.on('moveend', updateGeocoderProximity); // and then update proximity each time the map moves
-
+    map.setCenter(this.state.center);
     map.resize();
   }
 
-  toggleMenu() {
-    this.setState({
-      showPin: !this.state.showPin,
-    });
+  onMoveEnd(map) {
+    const center = map.getCenter();
+    this.locationUpdated({ lngLat: center, addressString: this.state.geocodeAddressString });
   }
 
-
-  render() {
-    const { lat, lng } = this.props;
-    const pinDrop = this.state.showPin ? 'show' : 'hide';
-
-    return (
-      <Map
-        // eslint-disable-next-line react/style-prop-object
-        style={'mapbox://styles/croweatx/cjow5d6cd3l7g2snrvf17wf0r'}
-        center={[lng, lat]}
-        onStyleLoad={this.onStyleLoad}
-        onDragStart={this.onDragStart}
-        onMoveEnd={this.onMoveEnd}>
-        <Layer
-          type="symbol"
-          id="selectedLocation"
-          layout={{
-            'icon-image': 'marker-open-small',
-            'icon-allow-overlap': true,
-          }}>
-          {/*
-          <Feature
-            coordinates={[lng, lat]}
-            draggable={true}
-            onMoveEnd={this.props.locationUpdated}
-          /> */}
-        </Layer>
-
-        <div className={`pin ${pinDrop}`}/>
-        <div className="pulse"/>
-      </Map>
-    );
-  }
-}
-
-
-export default class SelectLocationWidget extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.locationUpdated = this.locationUpdated.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.getCurrentPosition = this.getCurrentPosition.bind(this);
+  // calls us-forms-system onChange to propogate values up to the form
+  onChange(newFormValue) {
+    this.props.onChange(newFormValue);
+    this.setState({ formValue: newFormValue });
   }
 
-  onChange(event, { newValue }) {
-    // Keep our current location until we pick a suggestion
-    const valueJSON = this.props.value
-      ? this.props.value
-      : this.props.schema.formData;
-    const location = JSON.parse(valueJSON);
-
-    const newLocation = {
-      address: newValue,
-      position: location.position,
+  // prepare geocoded result to be propogated to form
+  passGeocodedResult({ lngLat, addressString }) {
+    const location = {
+      address: addressString === 'default' ? null : addressString,
+      position: lngLat
     };
-
-    const newValueJSON = JSON.stringify(newLocation);
-
-    this.props.onChange(newValueJSON);
+    const locationJSON = JSON.stringify(location);
+    this.onChange(locationJSON);
+    // update the geocoder input box with the address label
+    if (addressString !== 'default') {
+      geocoderControl.setInput(location.address);
+    }
   }
 
-  getCurrentPosition() {
-    window.navigator.geolocation.getCurrentPosition(
-      position => {
-        const lngLat = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-
-        this.locationUpdated({ lngLat });
-      },
-      { enableHighAccuracy: true },
-    );
-  }
-
-  locationUpdated({ lngLat }) {
-    let address = 'Dropped Pin';
-
-    // Use here reverse geocoding to get a human readable address for the pin
-    fetch(`
-      https://reverse.geocoder.api.here.com/6.2/reversegeocode.json?prox=${
-  lngLat.lat
-}%2C${
-  lngLat.lng
-}%2C250&mode=retrieveAddresses&maxresults=1&gen=9&app_id=${HERE_APP_ID}&app_code=${HERE_APP_CODE}`).then(
-      response => {
+  reverseGeocode({ lngLat }) {
+    // eslint-disable-next-line no-unused-vars
+    const mapboxURL = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lngLat.lng}%2C${lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
+    // eslint-disable-next-line no-unused-vars
+    const hereURL = `https://reverse.geocoder.api.here.com/6.2/reversegeocode.json?prox=${lngLat.lat}%2C${lngLat.lng}%2C250&mode=retrieveAddresses&maxresults=1&gen=9&app_id=${HERE_APP_ID}&app_code=${HERE_APP_CODE}`;
+    if (GEOCODE_DEBUG) {
+      fetch(mapboxURL).then(response => {
+        const provider = 'mapbox: ';
         if (response.status !== 200) {
-          console.error(
-            `Looks like there was a problem. Status Code: ${response.status}`,
-          );
-
-          const location = {
-            address,
-            position: lngLat,
-          };
-
-          const valueJSON = JSON.stringify(location);
-
-          this.props.onChange(valueJSON);
-
+          console.error(`Looks like there was a problem. Status Code: ${response.status}`);
           return;
         }
 
         response.json().then(data => {
-          address = data.Response.View[0].Result[0].Location.Address.Label;
-
-          const location = {
-            address,
-            position: lngLat,
-          };
-
-          const valueJSON = JSON.stringify(location);
-          geocoderControl.setInput(location.address);
-          this.props.onChange(valueJSON);
+          const mapboxAddress = data.features[0].place_name;
+          console.info(provider + JSON.stringify(data));
+          console.info(mapboxAddress);
         });
-      },
-    );
+      });
+
+      fetch(hereURL).then(response => {
+        const provider = 'HERE: ';
+        if (response.status !== 200) {
+          console.error(`Looks like there was a problem. Status Code: ${response.status}`);
+          return;
+        }
+
+        response.json().then(data => {
+          const hereAddress = data.Response.View[0].Result[0].Location.Address.Label;
+          console.info(provider + JSON.stringify(data));
+          console.info(hereAddress);
+        });
+      });
+    }
+    fetch(hereURL).then(response => {
+      if (response.status !== 200) {
+        console.error(`Looks like there was a problem. Status Code: ${response.status}`);
+        const address = 'Dropped Pin';
+        this.passGeocodedResult({ lngLat, addressString: address });
+        return;
+      }
+
+      response.json().then(data => {
+        const hereAddress = data.Response.View[0].Result[0].Location.Address.Label;
+        const address = hereAddress;
+        this.passGeocodedResult({ lngLat, addressString: address });
+      });
+    });
+  }
+
+  locationUpdated({ lngLat, addressString }) {
+    // If we have an address string, skip calling the reverse geocoder
+    if (addressString) {
+      this.passGeocodedResult({ lngLat, addressString });
+      return;
+    }
+
+    this.reverseGeocode({ lngLat });
   }
 
   render() {
-    const valueJSON = this.props.value
-      ? this.props.value
-      : this.props.schema.formData;
-    const location = JSON.parse(valueJSON);
+    const pinDrop = this.state.showPin ? 'show' : 'hide';
 
     return (
       <div>
         <div className="map-container">
-          <SelectLocationMap
-            lat={location.position.lat}
-            lng={location.position.lng}
-            locationUpdated={this.locationUpdated}/>
+          <Map
+            // eslint-disable-next-line react/style-prop-object
+            style={'mapbox://styles/croweatx/cjow5d6cd3l7g2snrvf17wf0r'}
+            onStyleLoad={this.onStyleLoad}
+            onDragStart={this.onDragStart}
+            onDragEnd={this.onDragEnd}
+            onMoveEnd={this.onMoveEnd}>
+            <Layer
+              type="symbol"
+              id="selectedLocation"
+              layout={{
+                'icon-image': 'marker-open-small',
+                'icon-allow-overlap': true
+              }}/>
+
+            <div className={`pin ${pinDrop}`}/>
+            <div className="pulse"/>
+          </Map>
         </div>
       </div>
     );
