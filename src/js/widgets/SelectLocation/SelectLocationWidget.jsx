@@ -6,7 +6,7 @@ import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 const HERE_APP_ID = 'R3EtGwWQmTKG5eVeyLV8';
 const HERE_APP_CODE = '8aDkNeOzfxGFkOKm9fER0A';
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiY3Jvd2VhdHgiLCJhIjoiY2o1NDFvYmxkMHhkcDMycDF2a3pseDFpZiJ9.UcnizcFDleMpv5Vbv8Rngw';
-const GEOCODE_DEBUG = true;
+const GEOCODE_DEBUG = false;
 
 const Map = ReactMapboxGl({
   accessToken: MAPBOX_TOKEN
@@ -176,7 +176,7 @@ export default class SelectLocationWidget extends Component {
         });
       });
     }
-    fetch(hereURL).then(response => {
+    fetch(mapboxURL).then(response => {
       if (response.status !== 200) {
         console.error(`Looks like there was a problem. Status Code: ${response.status}`);
         const address = 'Dropped Pin';
