@@ -143,6 +143,7 @@ export default class SelectLocationWidget extends Component {
   }
 
   reverseGeocode({ lngLat }) {
+    // some tech debt here fer sure
     // eslint-disable-next-line no-unused-vars
     const mapboxURL = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lngLat.lng}%2C${lngLat.lat}.json?access_token=${MAPBOX_TOKEN}`;
     // eslint-disable-next-line no-unused-vars
@@ -185,8 +186,8 @@ export default class SelectLocationWidget extends Component {
       }
 
       response.json().then(data => {
-        const hereAddress = data.Response.View[0].Result[0].Location.Address.Label;
-        const address = hereAddress;
+        const mapboxAddress = data.features[0].place_name;
+        const address = mapboxAddress;
         this.passGeocodedResult({ lngLat, addressString: address });
       });
     });
