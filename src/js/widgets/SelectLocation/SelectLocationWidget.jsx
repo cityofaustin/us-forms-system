@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactMapboxGl, { Layer } from 'react-mapbox-gl';
+import ReactMapboxGl from 'react-mapbox-gl';
 import { NavigationControl } from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
@@ -37,6 +37,7 @@ export default class SelectLocationWidget extends Component {
     this.onDragStart = this.onDragStart.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.onForwardGeocodeResult = this.onForwardGeocodeResult.bind(this);
+    this.onGeocoderClear = this.onGeocoderClear.bind(this);
 
     // take location data from the form if it exists, or use a default
     const location = props.value
@@ -50,7 +51,7 @@ export default class SelectLocationWidget extends Component {
       };
 
     this.state = {
-      center: [location.position.lng || -97.7460479736328, location.position.lat || 30.266184073558826],
+      center: [location.position.lng, location.position.lat],
       showPin: true,
       geocodeAddressString: location.address,
       formValue: props.value || ''
@@ -75,6 +76,21 @@ export default class SelectLocationWidget extends Component {
     });
   }
 
+  onMoveEnd(map) {
+    const center = map.getCenter();
+    this.locationUpdated({ lngLat: center, addressString: this.state.geocodeAddressString });
+  }
+
+  // calls us-forms-system onChange to propogate values up to the form
+  onChange(newFormValue) {
+    this.props.onChange(newFormValue);
+    this.setState({ formValue: newFormValue });
+  }
+
+  onGeocoderClear() {
+    this.onChange({});
+  }
+
   onStyleLoad(map) {
     // disable map rotation using right click + drag
     map.dragRotate.disable();
@@ -86,6 +102,8 @@ export default class SelectLocationWidget extends Component {
     map.addControl(geocoderControl, 'top-left');
 
     geocoderControl.on('result', this.onForwardGeocodeResult);
+
+    geocoderControl.on('clear', this.onGeocoderClear);
 
     function updateGeocoderProximity() {
       // proximity is designed for local scale, if the user is looking at the whole world,
@@ -103,19 +121,10 @@ export default class SelectLocationWidget extends Component {
 
     map.on('load', updateGeocoderProximity); // set proximity on map load
     map.on('moveend', updateGeocoderProximity); // and then update proximity each time the map moves
-    map.setCenter(this.state.center);
+
+    // set initial center
+    map.setCenter([-97.7460479736328, 30.266184073558826]);
     map.resize();
-  }
-
-  onMoveEnd(map) {
-    const center = map.getCenter();
-    this.locationUpdated({ lngLat: center, addressString: this.state.geocodeAddressString });
-  }
-
-  // calls us-forms-system onChange to propogate values up to the form
-  onChange(newFormValue) {
-    this.props.onChange(newFormValue);
-    this.setState({ formValue: newFormValue });
   }
 
   // prepare geocoded result to be propogated to form
@@ -125,9 +134,10 @@ export default class SelectLocationWidget extends Component {
       position: lngLat
     };
     const locationJSON = JSON.stringify(location);
-    this.onChange(locationJSON);
+
     // update the geocoder input box with the address label
     if (addressString !== 'default') {
+      this.onChange(locationJSON);
       geocoderControl.setInput(location.address);
     }
   }
@@ -206,14 +216,6 @@ export default class SelectLocationWidget extends Component {
             onDragStart={this.onDragStart}
             onDragEnd={this.onDragEnd}
             onMoveEnd={this.onMoveEnd}>
-            <Layer
-              type="symbol"
-              id="selectedLocation"
-              layout={{
-                'icon-image': 'marker-open-small',
-                'icon-allow-overlap': true
-              }}/>
-
             <div className={`pin ${pinDrop}`}/>
             <div className="pulse"/>
           </Map>
