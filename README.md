@@ -1,3 +1,6 @@
+# Attention!!
+Until coa-forms is pushed to production, use "1743-file-upload" as the master branch. New features/bugs should branch off "1743-file-upload", not "master". Contact Nick if you have any questions.
+
 # U.S. Forms System
 
 The US Forms System is an open source library and set of guiding principles for building complex web-based forms using [React](https://reactjs.org), the [JSON Schema standard](http://json-schema.org/), and the [US Web Design System](https://designsystem.digital.gov/).
