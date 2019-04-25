@@ -509,3 +509,7 @@ html body.sb-show-main div#root div div.mapboxgl-map div.mapboxgl-control-contai
     .mapboxgl-ctrl-group .mapboxgl-ctrl-compass {
     display: none;
     }
+
+    ::-ms-clear {
+  display:none;
+}
