@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import ReactMapboxGl from 'react-mapbox-gl';
 import { NavigationControl } from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import MapboxLanguage from '@mapbox/mapbox-gl-language';
 
 const HERE_APP_ID = 'R3EtGwWQmTKG5eVeyLV8';
 const HERE_APP_CODE = '8aDkNeOzfxGFkOKm9fER0A';
 const MAPBOX_TOKEN = 'pk.eyJ1IjoiY3Jvd2VhdHgiLCJhIjoiY2o1NDFvYmxkMHhkcDMycDF2a3pseDFpZiJ9.UcnizcFDleMpv5Vbv8Rngw';
 const GEOCODE_DEBUG = false;
+const MAP_LANGUAGE = 'englishMap';
 
 const Map = ReactMapboxGl({
-  accessToken: MAPBOX_TOKEN
+  accessToken: MAPBOX_TOKEN,
 });
 
 const geocoderControl = new MapboxGeocoder({
@@ -92,6 +94,12 @@ export default class SelectLocationWidget extends Component {
   }
 
   onStyleLoad(map) {
+    const language = new MapboxLanguage();
+    if (MAP_LANGUAGE === 'spanishMap') {
+      map.setStyle(language.setLanguage(map.getStyle(), 'es'));
+    }
+
+
     // disable map rotation using right click + drag
     map.dragRotate.disable();
     // disable map rotation using touch rotation gesture
