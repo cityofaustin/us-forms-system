@@ -380,7 +380,7 @@ export function removeFieldFromReview(pageState) {
   const uiSchema = pageState.uiSchema;
   const schema = pageState.schema;
 
-  if (uiSchema['ui:removeFieldFromReview']) {
+  if (uiSchema && uiSchema['ui:removeFieldFromReview']) {
     const removableWidget = uiSchema['ui:removeFieldFromReview'];
     delete uiSchema[removableWidget];
     delete schema.properties[removableWidget];
