@@ -5874,7 +5874,10 @@ legend.schemaform-label.schemaform-file-label {
   /* uswds adds borders to add buttons on error */
   display: inline;
   font-size: 0em;
-  height: 0px; }
+  height: 0px;
+  /* the following settings are to prevent zooming on mobile browsers */
+  font-size: 16px;
+  position: absolute !important; }
 
 .hidden-flatpickr-input-box:focus {
   outline: none !important;
@@ -5886,7 +5889,7 @@ legend.schemaform-label.schemaform-file-label {
 
 .flatpickr-input-button {
   cursor: pointer;
-  color: #0050D8;
+  color: #0050d8;
   font-size: 2.25em; }
 
 .emoji {
@@ -5907,11 +5910,12 @@ legend.schemaform-label.schemaform-file-label {
   width: 4.5em; }
 
 /* Hide HTML5 Up and Down arrows. */
-input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0; }
 
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield; }
 
 /* Make "input-date-label" label smaller than main Date/Time label */
@@ -7818,5 +7822,8 @@ html body.sb-show-main div#root div div.mapboxgl-map div.mapboxgl-control-contai
       } */ }
 
 .mapboxgl-ctrl-group .mapboxgl-ctrl-compass {
+  display: none; }
+
+::-ms-clear {
   display: none; }
 /*# sourceMappingURL=styles.css.map */
