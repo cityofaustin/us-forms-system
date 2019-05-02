@@ -53,7 +53,8 @@ describe('Schemaform review <ArrayField>', () => {
         requiredSchema={requiredSchema}/>
     );
 
-    expect(tree.subTree('.form-review-panel-page-header').text()).to.equal(uiSchema['ui:title']);
+    // taking out test becuase we arent showing title in our version
+    /* expect(tree.subTree('.form-review-panel-page-header').text()).to.equal(uiSchema['ui:title']); */
     expect(tree.everySubTree('SchemaForm')).to.be.empty;
   });
   it('should render items', () => {
@@ -148,7 +149,8 @@ describe('Schemaform review <ArrayField>', () => {
 
     tree.getMountedInstance().handleAdd();
 
-    expect(tree.everySubTree('h5')[1].text()).to.equal('New Item name');
+    // not showing title of items in current version
+    // expect(tree.everySubTree('h5')[1].text()).to.equal('New Item name');
   });
   it('should render array warning', () => {
     // If it's a BasicArrayField with a set minItems, make sure it doesn't break

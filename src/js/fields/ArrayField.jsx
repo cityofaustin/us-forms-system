@@ -291,7 +291,7 @@ export default class ArrayField extends React.Component {
             )}
             disabled={!this.props.formData}
             onClick={this.handleAdd}>
-            Add Another {uiOptions.itemName}
+            Add another {uiOptions.itemName}
           </button>
         </div>
       </div>

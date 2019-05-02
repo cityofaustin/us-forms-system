@@ -1,2 +1,5 @@
 docs/*
 lib/*
+src/js/widgets/FileUploadWidget.jsx
+src/js/widgets/TimeWidget/*
+src/js/widgets/CalendarDateWidget/index.jsx

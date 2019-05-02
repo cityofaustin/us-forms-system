@@ -18,13 +18,13 @@ Additionally, the [US Forms System Starter App](https://github.com/usds/us-forms
 
 Please read our [Code of Conduct](https://github.com/usds/us-forms-system/blob/master/CODE_OF_CONDUCT.md) and [CONTRIBUTING.md](https://github.com/usds/us-forms-system/blob/master/CONTRIBUTING.md) for more details.
 
-#### Join the contributor mailing list: 
+#### Join the contributor mailing list:
 
-To receive regular updates about this project, please join our mailing list by sending an email to forms-subscribe-request@listserv.gsa.gov. 
+To receive regular updates about this project, please join our mailing list by sending an email to forms-subscribe-request@listserv.gsa.gov.
 
 #### Contact the project team:
 
-If you want to directly contact the project team, you can send your questions to forms@lists.usds.gov. 
+If you want to directly contact the project team, you can send your questions to forms@lists.usds.gov.
 
 ### More project artifacts
 

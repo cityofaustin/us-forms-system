@@ -164,6 +164,10 @@ The us-forms-system code includes additional `uiSchema` functionality not found 
     }
   ],
 
+  // Removes a subfield from the ReviewPage.
+  // Also removes any expandUnder clauses for other subfields.
+  'ui:removeFieldFromReview': 'field'
+
   // An object with field-specific error messages. Structured by error name (from JSON Schema
   // error types). This is passed to custom validations in `ui:validations` in order to allow
   // configurable error messages in a validator.

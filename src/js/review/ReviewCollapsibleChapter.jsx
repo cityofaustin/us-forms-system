@@ -10,6 +10,7 @@ import SchemaForm from '../components/SchemaForm';
 import {
   getArrayFields,
   getNonArraySchema,
+  removeFieldFromReview
 } from '../helpers';
 import ArrayField from './ArrayField';
 
@@ -98,7 +99,7 @@ export default class ReviewCollapsibleChapter extends React.Component {
               pageKeys={pageKeys}
               formData={form.data}/>}
           {expandedPages.map(page => {
-            const pageState = form.pages[page.pageKey];
+            let pageState = form.pages[page.pageKey];
             let pageSchema;
             let pageUiSchema;
             let pageData;
@@ -114,6 +115,7 @@ export default class ReviewCollapsibleChapter extends React.Component {
               arrayFields = [];
               fullPageKey = `${page.pageKey}${page.index}`;
             } else {
+              pageState = removeFieldFromReview(pageState);
               editing = pageState.editMode;
               // TODO: support array fields inside of an array page?
               // Our pattern is to separate out array fields (growable tables) from
@@ -155,7 +157,7 @@ export default class ReviewCollapsibleChapter extends React.Component {
                     editModeOnReviewPage={page.editModeOnReviewPage}>
                     {!editing ? <div/> : <ProgressButton
                       submitButton
-                      buttonText="Update Page"
+                      buttonText="Update"
                       buttonClass="usa-button-primary"/>}
                   </SchemaForm>}
                 {arrayFields.map(arrayField => (
