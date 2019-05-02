@@ -1,6 +1,3 @@
-# Attention!!
-Until coa-forms is pushed to production, use "1743-file-upload" as the master branch. New features/bugs should branch off "1743-file-upload", not "master". Contact Nick if you have any questions.
-
 # U.S. Forms System
 
 The US Forms System is an open source library and set of guiding principles for building complex web-based forms using [React](https://reactjs.org), the [JSON Schema standard](http://json-schema.org/), and the [US Web Design System](https://designsystem.digital.gov/).
@@ -21,13 +18,13 @@ Additionally, the [US Forms System Starter App](https://github.com/usds/us-forms
 
 Please read our [Code of Conduct](https://github.com/usds/us-forms-system/blob/master/CODE_OF_CONDUCT.md) and [CONTRIBUTING.md](https://github.com/usds/us-forms-system/blob/master/CONTRIBUTING.md) for more details.
 
-#### Join the contributor mailing list: 
+#### Join the contributor mailing list:
 
-To receive regular updates about this project, please join our mailing list by sending an email to forms-subscribe-request@listserv.gsa.gov. 
+To receive regular updates about this project, please join our mailing list by sending an email to forms-subscribe-request@listserv.gsa.gov.
 
 #### Contact the project team:
 
-If you want to directly contact the project team, you can send your questions to forms@lists.usds.gov. 
+If you want to directly contact the project team, you can send your questions to forms@lists.usds.gov.
 
 ### More project artifacts
 

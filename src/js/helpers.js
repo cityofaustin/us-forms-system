@@ -372,6 +372,29 @@ export function getNonArraySchema(schema, uiSchema = {}) {
   return schema;
 }
 
+/*
+  Removes Widget from the Review Page.
+  Also eliminates any "expandUnder" clauses that reference the deleted Widget.
+  */
+export function removeFieldFromReview(pageState) {
+  const uiSchema = pageState.uiSchema;
+  const schema = pageState.schema;
+
+  if (uiSchema && uiSchema['ui:removeFieldFromReview']) {
+    const removableWidget = uiSchema['ui:removeFieldFromReview'];
+    delete uiSchema[removableWidget];
+    delete schema.properties[removableWidget];
+    for (const key of Object.getOwnPropertyNames(uiSchema)) {
+      if ((uiSchema[key]['ui:options']) && (uiSchema[key]['ui:options'].expandUnder === removableWidget)) {
+        delete uiSchema[key]['ui:options'].expandUnder;
+        delete schema.properties[key]['ui:collapsed'];
+      }
+    }
+  }
+
+  return pageState;
+}
+
 
 export const pureWithDeepEquals = shouldUpdate((props, nextProps) => {
   return !deepEquals(props, nextProps);
