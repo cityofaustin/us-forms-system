@@ -198,6 +198,8 @@ const FileUploadWidget = (endpoint) => {
               allowMultiple
               allowFileSizeValidation
 
+              labelIdle='Drag &amp; drop your files or <span class="filepond--label-action"> browse </span>'
+
               maxFiles={100}
               maxFileSize="20000MB"
 
