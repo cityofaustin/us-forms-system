@@ -66,7 +66,9 @@ class FormApp extends React.Component {
           <div className="usa-width-two-thirds medium-8 columns centered-form-two-thirds">
             <Element name="topScrollElement"/>
 
-            {formNav}
+            {!formConfig.hideProgressBar &&
+              formNav
+            }
             {renderedChildren}
           </div>
         </div>

@@ -80,7 +80,7 @@ The `SegmentedProgressBar` component calculates the number of chapters completed
 
 In `formConfig`, define your form's chapters and the pages contained inside each chapter. To add a progress bar to a multi-page form, create chapters with a single page each. We don't recommend including a progress bar on single-page forms.
 
-US Forms System includes the progress bar by default, and will display automatically when the chapters and pages are defined. To remove the progress bar, edit the `FormNav.jsx` component to remove the defined `SegmentedProgressBar` in the HTML.
+US Forms System includes the progress bar by default, and will display automatically when the chapters and pages are defined. To remove the progress bar, add `hideProgressBar: true` to your formConfig.
 
 For the code implementation, see:
 - [FormNav.jsx](../../src/js/components/FormNav.jsx)
