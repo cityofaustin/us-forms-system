@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Flatpickr from 'react-flatpickr';
 import { set, cloneDeep } from 'lodash';
-import { isAfter, isBefore } from 'date-fns';
+import { isAfter, isBefore, startOfDay } from 'date-fns';
 
 import {formatYear, formatDayMonth, parseISODate, formatISOPartialDate, setValidDate, autofillYearPast, autofillYearFuture} from './dateHelpers';
 
@@ -45,12 +45,12 @@ const CalendarDateWidget = (options) => {
         return true
       } else if (
         (this.validation === 'pastOnly') &&
-        (isAfter(new Date(year, month - 1, day), new Date()))
+        (isAfter(new Date(year, month - 1, day), startOfDay(new Date())))
       ) {
         return true
       } else if (
         (this.validation === 'futureOnly') &&
-        (isBefore(new Date(year, month - 1, day), new Date()))
+        (isBefore(new Date(year, month - 1, day), startOfDay(new Date())))
       ) {
         return true
       } else {
